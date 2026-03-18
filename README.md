@@ -22,7 +22,7 @@ A production-grade Inventory ERP MVP built with **Node.js + Express + Knex (MySQ
 ## Project Structure
 
 ```
-inventory-erp/
+stockos/
 │
 ├── backend/
 │   ├── .env.example                    ← Copy to .env and fill DB credentials
@@ -109,8 +109,8 @@ inventory-erp/
 ### 1. Clone and install dependencies
 
 ```bash
-cd inventory-erp/backend && npm install
-cd inventory-erp/frontend && npm install
+cd stockos/backend && npm install
+cd stockos/frontend && npm install
 ```
 
 ### 2. Configure environment
