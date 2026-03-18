@@ -87,11 +87,11 @@ export default function Layout() {
 
       <div className="main-content">
         {/* Mobile header */}
-        <div style={{ display: 'none', padding: '12px 16px', background: 'var(--bg-surface)', borderBottom: '1px solid var(--border)', alignItems: 'center', gap: 12 }} className="mobile-header">
-          <button onClick={() => setMobileOpen(true)} style={{ background: 'none', border: 'none', color: 'var(--text-primary)', cursor: 'pointer' }}>
+        <div className="mobile-header">
+          <button onClick={() => setMobileOpen(true)} className="mobile-menu-btn">
             <Menu size={20} />
           </button>
-          <span style={{ fontFamily: 'Space Mono', fontSize: 13, color: 'var(--accent-blue)', fontWeight: 700 }}>◈ StockOS</span>
+          <span className="mobile-logo">◈ StockOS</span>
         </div>
         <Outlet />
       </div>
