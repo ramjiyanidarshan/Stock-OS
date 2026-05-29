@@ -10,7 +10,7 @@ export const AuthProvider = ({ children }) => {
   useEffect(() => {
     const token = localStorage.getItem('erp_token');
     if (token) {
-      getMe().then(r => setUser(r.data)).catch(() => localStorage.removeItem('erp_token')).finally(() => setLoading(false));
+      getMe().then(r => setUser(r.data.user || r.data)).catch(() => localStorage.removeItem('erp_token')).finally(() => setLoading(false));
     } else {
       setLoading(false);
     }
@@ -20,7 +20,7 @@ export const AuthProvider = ({ children }) => {
     const r = await apiLogin({ email, password });
     localStorage.setItem('erp_token', r.data.token);
     setUser(r.data.user);
-    return r.data.user;
+    return r.data;
   };
 
   const logout = () => {

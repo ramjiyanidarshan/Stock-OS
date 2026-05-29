@@ -10,8 +10,22 @@ api.interceptors.request.use(config => {
   return config;
 });
 
+// Normalize response format
+const normalizeResponse = (response) => {
+  const { data } = response;
+  
+  if (data?.data !== undefined) {
+    return {
+      ...response,
+      data: data.data
+    };
+  }
+  
+  return response;
+};
+
 api.interceptors.response.use(
-  r => r,
+  r => normalizeResponse(r),
   err => {
     if (err.response?.status === 401) {
       localStorage.removeItem('erp_token');
