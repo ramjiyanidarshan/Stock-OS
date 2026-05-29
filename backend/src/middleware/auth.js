@@ -20,6 +20,7 @@ export const authenticate = async (req, res, next) => {
     //   : (user.permissions || []);
     // req.user = user;
     req['x-user'] = {name: decoded.name, email: decoded.email, role_name: decoded.role, permissions: decoded.permissions || []};
+    console.debug('Authentication Completed: with user:', req['x-user']);
     next();
   } catch (err) {
     return res.status(401).json({ error: 'Invalid or expired token' });

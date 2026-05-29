@@ -2,9 +2,8 @@ import { getUsers } from '../models/user.model.js';
 
 export const listUsers = async (req, res, next) => {
     try{
-        log.info(`User ${req.user.email} requested user list`);
-        const users = await getUsers(req.db);
-        res.status(200).json(users);
+        const [users] = await getUsers(req['x-db-connection']);
+        res.status(200).json({error: false, message: "Request processed successfully.", data:users});
     } catch(err){
         console.error(err);
         next(err);

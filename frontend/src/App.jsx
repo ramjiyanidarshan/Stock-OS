@@ -26,7 +26,8 @@ function App() {
           <Route path="/" element={<ProtectedRoute><Layout /></ProtectedRoute>}>
             <Route index element={<Navigate to="dashboard" replace />} />
             <Route path="dashboard" element={<Dashboard />} />
-            <Route path="team" element={<ProtectedRoute permission="team.read"><TeamPage /></ProtectedRoute>} />
+            {/* <Route path="team" element={<ProtectedRoute permission="team.read"><TeamPage /></ProtectedRoute>} /> */}
+            <Route path="team" element={<TeamPage />} />
           </Route>
           <Route path="*" element={<NotFound />} />
         </Routes>

@@ -24,13 +24,11 @@ api.interceptors.response.use(
 // Auth
 export const login = (data) => api.post('/auth/login', data);
 export const getMe = () => api.get('/auth/me');
-export const seed = () => api.post('/auth/seed');
 
 // Team
-export const getUsers = () => api.get('/team/users');
-export const createUser = (data) => api.post('/team/users', data);
-export const updateUser = (id, data) => api.put(`/team/users/${id}`, data);
-export const deleteUser = (id) => api.delete(`/team/users/${id}`);
-export const getRoles = () => api.get('/team/roles');
+export const getUsers = () => api.get('/users');
+export const createUser = (data) => api.post('/users', data);
+export const updateUser = (id, data) => api.put(`/users/${id}`, data);
+export const deleteUser = (id) => api.delete(`/users/${id}`);
 
 export default api;

@@ -8,7 +8,8 @@ import {
 
 const NAV = [
   { section: 'Admin' },
-  { to: '/team', label: 'Team Members', icon: Users, perm: 'team.read' },
+  { to: '/team', label: 'Team Members', icon: Users },
+  // { to: '/team', label: 'Team Members', icon: Users, perm: 'team.read' },
 ];
 
 export default function Layout() {

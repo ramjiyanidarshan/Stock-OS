@@ -1,7 +1,6 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
-import { seed } from '../services/api';
 import toast from 'react-hot-toast';
 
 export default function LoginPage() {
@@ -20,15 +19,6 @@ export default function LoginPage() {
       toast.error(err.response?.data?.error || 'Login failed');
     } finally {
       setLoading(false);
-    }
-  };
-
-  const handleSeed = async () => {
-    try {
-      const r = await seed();
-      toast.success(r.data.message, { duration: 6000 });
-    } catch (err) {
-      toast.error('Seed failed: ' + (err.response?.data?.error || err.message));
     }
   };
 
@@ -84,13 +74,6 @@ export default function LoginPage() {
               {loading ? 'Signing in...' : 'Sign In'}
             </button>
           </form>
-
-          <div style={{ marginTop: 16, paddingTop: 16, borderTop: '1px solid var(--border)' }}>
-            <p style={{ fontSize: 12, color: 'var(--text-muted)', marginBottom: 8 }}>First time? Seed the database with demo data:</p>
-            <button className="btn btn-ghost btn-sm" onClick={handleSeed} style={{ width: '100%', justifyContent: 'center' }}>
-              ⚙ Seed Demo Data & Create Admin
-            </button>
-          </div>
         </div>
 
         <div style={{ marginTop: 16, textAlign: 'center' }}>

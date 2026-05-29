@@ -1,5 +1,5 @@
 import React, { useEffect, useState, useCallback } from 'react';
-import { getUsers, createUser, updateUser, deleteUser, getRoles } from '../services/api';
+import { getUsers, createUser, updateUser, deleteUser } from '../services/api';
 import { useAuth } from '../context/AuthContext';
 import toast from 'react-hot-toast';
 import { Plus, Edit, Trash2, ShieldCheck, X } from 'lucide-react';
@@ -9,15 +9,14 @@ const ROLE_BADGE = { admin: 'badge-purple', warehouse_user: 'badge-blue', viewer
 export default function TeamPage() {
   const { can, user: me } = useAuth();
   const [users, setUsers] = useState([]);
-  const [roles, setRoles] = useState([]);
   const [modal, setModal] = useState(null);
   const [form, setForm] = useState({});
   const [saving, setSaving] = useState(false);
 
   const load = useCallback(async () => {
-    const [u, r] = await Promise.all([getUsers(), getRoles()]);
+    const u = await getUsers();
+    console.log(u);
     setUsers(u.data);
-    setRoles(r.data);
   }, []);
 
   useEffect(() => { load(); }, [load]);
@@ -58,7 +57,7 @@ export default function TeamPage() {
       <div className="page-body">
         {/* Roles reference */}
         <div style={{ display: 'flex', gap: 12, marginBottom: 20, flexWrap: 'wrap' }}>
-          {roles.map(r => (
+          {/* {roles.map(r => (
             <div key={r.id} className="card" style={{ flex: '1 1 220px', padding: '14px 16px' }}>
               <div style={{ display: 'flex', alignItems: 'center', gap: 8, marginBottom: 8 }}>
                 <ShieldCheck size={14} style={{ color: 'var(--accent-blue)' }} />
@@ -70,7 +69,7 @@ export default function TeamPage() {
                 ))}
               </div>
             </div>
-          ))}
+          ))} */}
         </div>
 
         <div className="card">
@@ -80,7 +79,7 @@ export default function TeamPage() {
                 <tr><th>Name</th><th>Email</th><th>Role</th><th>Department</th><th>Status</th><th></th></tr>
               </thead>
               <tbody>
-                {users.map(u => (
+                {users && users.map(u => (
                   <tr key={u.id}>
                     <td>
                       <div style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
@@ -96,12 +95,12 @@ export default function TeamPage() {
                     <td style={{ color: 'var(--text-muted)', fontSize: 13 }}>{u.department || '—'}</td>
                     <td><span className="badge badge-green">Active</span></td>
                     <td>
-                      {can('team.write') && (
+                      {/* {can('team.write') && ( */}
                         <div style={{ display: 'flex', gap: 6 }}>
                           <button className="btn btn-ghost btn-sm" onClick={() => openEdit(u)}><Edit size={13} /></button>
                           <button className="btn btn-ghost btn-sm" onClick={() => handleDelete(u.id)} style={{ color: 'var(--accent-red)' }}><Trash2 size={13} /></button>
                         </div>
-                      )}
+                      {/* )} */}
                     </td>
                   </tr>
                 ))}
@@ -132,7 +131,7 @@ export default function TeamPage() {
                 <div className="form-group"><label className="form-label">Role *</label>
                   <select className="form-control" value={form.role_id || ''} onChange={e => setForm(p => ({ ...p, role_id: e.target.value }))}>
                     <option value="">Select Role</option>
-                    {roles.map(r => <option key={r.id} value={r.id}>{r.name.replace('_', ' ')}</option>)}
+                    {/* {roles.map(r => <option key={r.id} value={r.id}>{r.name.replace('_', ' ')}</option>)} */}
                   </select>
                 </div>
                 <div className="form-group"><label className="form-label">Department</label>

@@ -3,4 +3,4 @@ import {listUsers, createUser, updateUser, deleteUser} from '../controllers/user
 import { authorize } from '../middleware/auth.js';
 export const userRoutes = Router();
 
-userRoutes.get('/', authorize('team.read'), listUsers);
+userRoutes.get('/', listUsers);
