@@ -4,6 +4,7 @@ import { Toaster } from 'react-hot-toast';
 import { AuthProvider, useAuth } from './context/AuthContext';
 import Layout from './components/Layout';
 import LoginPage from './pages/LoginPage';
+import Dashboard from './pages/Dashboard';
 import TeamPage from './pages/TeamPage';
 import NotFound from './pages/NotFound';
 
@@ -23,7 +24,8 @@ function App() {
         <Routes>
           <Route path="/login" element={<LoginPage />} />
           <Route path="/" element={<ProtectedRoute><Layout /></ProtectedRoute>}>
-            <Route index element={<Navigate to="/" replace />} />
+            <Route index element={<Navigate to="dashboard" replace />} />
+            <Route path="dashboard" element={<Dashboard />} />
             <Route path="team" element={<ProtectedRoute permission="team.read"><TeamPage /></ProtectedRoute>} />
           </Route>
           <Route path="*" element={<NotFound />} />
