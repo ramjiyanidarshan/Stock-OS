@@ -4,14 +4,8 @@ import { Toaster } from 'react-hot-toast';
 import { AuthProvider, useAuth } from './context/AuthContext';
 import Layout from './components/Layout';
 import LoginPage from './pages/LoginPage';
-import DashboardPage from './pages/DashboardPage';
-import InventoryPage from './pages/InventoryPage';
-import ProductsPage from './pages/ProductsPage';
-import MovementsPage from './pages/MovementsPage';
-import StockOperationsPage from './pages/StockOperationsPage';
-import WarehousePage from './pages/WarehousePage';
 import TeamPage from './pages/TeamPage';
-import AlertsPage from './pages/AlertsPage';
+import NotFound from './pages/NotFound';
 
 const ProtectedRoute = ({ children, permission }) => {
   const { user, loading, can } = useAuth();
@@ -29,17 +23,10 @@ function App() {
         <Routes>
           <Route path="/login" element={<LoginPage />} />
           <Route path="/" element={<ProtectedRoute><Layout /></ProtectedRoute>}>
-            <Route index element={<Navigate to="/dashboard" replace />} />
-            <Route path="dashboard" element={<DashboardPage />} />
-            <Route path="inventory" element={<InventoryPage />} />
-            <Route path="products" element={<ProductsPage />} />
-            <Route path="movements" element={<MovementsPage />} />
-            <Route path="operations" element={<StockOperationsPage />} />
-            <Route path="warehouses" element={<WarehousePage />} />
+            <Route index element={<Navigate to="/" replace />} />
             <Route path="team" element={<ProtectedRoute permission="team.read"><TeamPage /></ProtectedRoute>} />
-            <Route path="alerts" element={<AlertsPage />} />
           </Route>
-          <Route path="*" element={<Navigate to="/dashboard" replace />} />
+          <Route path="*" element={<NotFound />} />
         </Routes>
       </BrowserRouter>
     </AuthProvider>

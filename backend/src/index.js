@@ -1,9 +1,11 @@
-require('dotenv').config();
-const express = require('express');
-const cors = require('cors');
-const helmet = require('helmet');
-const rateLimit = require('express-rate-limit');
+import dotenv from 'dotenv';
+import express from 'express';
+import helmet from 'helmet';
+import cors from 'cors';
+import rateLimit from 'express-rate-limit';
+import {router as routes} from './routes/index.js';
 
+dotenv.config();
 const app = express();
 
 app.use(helmet());
@@ -17,7 +19,7 @@ app.use('/api/auth/login', rateLimit({
   message: { error: 'Too many login attempts, try again later' },
 }));
 
-app.use('/api', require('./routes/index'));
+app.use('/api', routes);
 
 // Global error handler
 app.use((err, req, res, next) => {
@@ -26,4 +28,5 @@ app.use((err, req, res, next) => {
 });
 
 const PORT = process.env.PORT || 5000;
-app.listen(PORT, () => console.log(`🚀 Inventory ERP API running on port ${PORT}`));
+const serverName = process.env.SERVER_NAME || 'StockOS API';
+app.listen(PORT, () => console.log(`[*] Web server: ${serverName} running on port ${PORT}`));

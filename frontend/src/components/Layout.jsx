@@ -7,16 +7,6 @@ import {
 } from 'lucide-react';
 
 const NAV = [
-  { section: 'Overview' },
-  { to: '/dashboard', label: 'Dashboard', icon: LayoutDashboard, perm: null },
-  { to: '/alerts', label: 'Alerts', icon: Bell, perm: 'alerts.read', badge: true },
-  { section: 'Inventory' },
-  { to: '/inventory', label: 'Stock Overview', icon: Boxes, perm: 'inventory.read' },
-  { to: '/operations', label: 'Stock Operations', icon: TrendingUp, perm: 'inventory.write' },
-  { to: '/movements', label: 'Audit Trail', icon: ClipboardList, perm: 'inventory.read' },
-  { section: 'Master Data' },
-  { to: '/products', label: 'Products', icon: Package, perm: 'products.read' },
-  { to: '/warehouses', label: 'Warehouses', icon: Warehouse, perm: 'warehouse.read' },
   { section: 'Admin' },
   { to: '/team', label: 'Team Members', icon: Users, perm: 'team.read' },
 ];

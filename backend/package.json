@@ -5,7 +5,11 @@
   "scripts": {
     "start": "node src/index.js",
     "dev": "nodemon src/index.js",
-    "migrate": "node src/migrations/run.js"
+    "migrate": "node migrate.js",
+    "migrate:fresh": "node migrate.js --fresh",
+    "seed": "node seed.js",
+    "seed:force": "node seed.js --force",
+    "setup": "node migrate.js && node seed.js"
   },
   "dependencies": {
     "express": "^4.18.2",
