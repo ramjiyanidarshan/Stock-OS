@@ -1,10 +1,10 @@
 import { getUsers } from '../models/user.model.js';
 
 export const listUsers = async (req, res, next) => {
-    try{
+    try {
         const [users] = await getUsers(req['x-db-connection']);
-        res.status(200).json({error: false, message: "Request processed successfully.", data:users});
-    } catch(err){
+        res.status(200).json({ error: false, message: "Request processed successfully.", data: users });
+    } catch (err) {
         console.error(err);
         next(err);
     } finally {
@@ -13,9 +13,9 @@ export const listUsers = async (req, res, next) => {
 };
 
 export const createUser = async (req, res, next) => {
-    try{
+    try {
         // const newUser = await createUser(req.db, req.body);
-    } catch(err){
+    } catch (err) {
         console.error(err);
         next(err);
     } finally {
@@ -24,9 +24,9 @@ export const createUser = async (req, res, next) => {
 };
 
 export const updateUser = async (req, res, next) => {
-    try{
+    try {
 
-    } catch(err){
+    } catch (err) {
         console.error(err);
         next(err);
     } finally {
@@ -35,9 +35,9 @@ export const updateUser = async (req, res, next) => {
 };
 
 export const deleteUser = async (req, res, next) => {
-    try{
+    try {
 
-    } catch(err){
+    } catch (err) {
         console.error(err);
         next(err);
     } finally {

@@ -3,22 +3,41 @@ import { NavLink, Outlet, useNavigate } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
 import {
   LayoutDashboard, Package, ArrowLeftRight, Warehouse, Users,
-  Bell, LogOut, Boxes, ClipboardList, TrendingUp, Menu, X
+  Bell, LogOut, Boxes, ClipboardList, TrendingUp, Menu, X, ChevronDown, Lock, Shield, User, Train, FileInput
 } from 'lucide-react';
 
 const NAV = [
-  { section: 'Admin' },
-  { to: '/team', label: 'Team Members', icon: Users },
-  // { to: '/team', label: 'Team Members', icon: Users, perm: 'team.read' },
+  { section: 'Dashboard' },
+  { to: '/dashboard', label: 'Dashboard', icon: LayoutDashboard },
+  { section: 'Access Control' },
+  {
+    label: 'Access Control',
+    icon: Lock,
+    submenu: [
+      { to: '/access-control/modules', label: 'Modules', icon: Boxes },
+      { to: '/access-control/permissions', label: 'Permissions', icon: Shield },
+      { to: '/access-control/users', label: 'Users', icon: User },
+    ],
+  },
+  { section: 'Log and Trace' },
+  {
+    label: 'Logs',
+    icon: FileInput,
+    submenu: [
+      { to: '/log-and-trace/transactions', label: 'Transaction', icon: Train }
+    ],
+  },
 ];
 
 export default function Layout() {
   const { user, logout, can } = useAuth();
   const navigate = useNavigate();
   const [mobileOpen, setMobileOpen] = useState(false);
+  const [expandedMenu, setExpandedMenu] = useState(null);
   const [alertCount] = useState(0);
 
   const handleLogout = () => { logout(); navigate('/login'); };
+  const toggleSubmenu = (idx) => setExpandedMenu(expandedMenu === idx ? null : idx);
 
   const SidebarContent = () => (
     <>
@@ -30,9 +49,49 @@ export default function Layout() {
         {NAV.map((item, i) => {
           if (item.section) return <div key={i} className="nav-section-label">{item.section}</div>;
           if (item.perm && !can(item.perm)) return null;
+
+          if (item.submenu) {
+            return (
+              <div key={i} className="nav-parent-group">
+                <button
+                  onClick={() => toggleSubmenu(i)}
+                  className="nav-item nav-parent"
+                  style={{ justifyContent: 'space-between' }}
+                >
+                  <div style={{ display: 'flex', alignItems: 'center', gap: 6 }}>
+                    <item.icon size={15} />
+                    {item.label}
+                  </div>
+                  <ChevronDown
+                    size={15}
+                    style={{
+                      transform: expandedMenu === i ? 'rotate(180deg)' : 'rotate(0deg)',
+                      transition: 'transform 0.2s',
+                    }}
+                  />
+                </button>
+                {expandedMenu === i && (
+                  <div className="nav-submenu">
+                    {item.submenu.map((subitem, subIdx) => (
+                      <NavLink
+                        key={subIdx}
+                        to={subitem.to}
+                        className={({ isActive }) => `nav-subitem${isActive ? ' active' : ''}`}
+                        onClick={() => setMobileOpen(false)}
+                      >
+                        <subitem.icon size={14} />
+                        {subitem.label}
+                      </NavLink>
+                    ))}
+                  </div>
+                )}
+              </div>
+            );
+          }
+
           return (
             <NavLink
-              key={item.to}
+              key={i}
               to={item.to}
               className={({ isActive }) => `nav-item${isActive ? ' active' : ''}`}
               onClick={() => setMobileOpen(false)}

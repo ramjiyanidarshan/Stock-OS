@@ -7,6 +7,9 @@ import LoginPage from './pages/LoginPage';
 import Dashboard from './pages/Dashboard';
 import TeamPage from './pages/TeamPage';
 import NotFound from './pages/NotFound';
+import ModulesPage from './pages/ModulesPage';
+import PermissionsPage from './pages/PermissionsPage';
+import UsersPage from './pages/UsersPage';
 
 const ProtectedRoute = ({ children, permission }) => {
   const { user, loading, can } = useAuth();
@@ -19,7 +22,7 @@ const ProtectedRoute = ({ children, permission }) => {
 function App() {
   return (
     <AuthProvider>
-      <BrowserRouter>
+      <BrowserRouter future={{ v7_startTransition: true }}>
         <Toaster position="top-right" toastOptions={{ style: { background: '#1a1f2e', color: '#e2e8f0', border: '1px solid #2d3748' } }} />
         <Routes>
           <Route path="/login" element={<LoginPage />} />
@@ -28,6 +31,9 @@ function App() {
             <Route path="dashboard" element={<Dashboard />} />
             {/* <Route path="team" element={<ProtectedRoute permission="team.read"><TeamPage /></ProtectedRoute>} /> */}
             <Route path="team" element={<TeamPage />} />
+            <Route path="access-control/modules" element={<ModulesPage />} />
+            <Route path="access-control/permissions" element={<PermissionsPage />} />
+            <Route path="access-control/users" element={<TeamPage />} />
           </Route>
           <Route path="*" element={<NotFound />} />
         </Routes>

@@ -1,6 +1,7 @@
 import bcrypt from 'bcryptjs';
 import jwt from 'jsonwebtoken';
-import {getUsers} from '../models/user.model.js';
+import { getUsers } from '../models/user.model.js';
+import { morphText } from '../helpers/text.helper.js';
 
 export const login = async (req, res, next) => {
   const { email, password } = req.body;
@@ -13,12 +14,12 @@ export const login = async (req, res, next) => {
     if (!valid) return res.status(401).json({ error: 'Invalid credentials' });
 
     const token = jwt.sign(
-      { id: user[0].id, email: user[0].email, role: user[0].role_name },
+      { id: user[0].id, name: morphText(user[0].name), email: morphText(user[0].email, 1), role: user[0].role_name },
       process.env.JWT_SECRET,
       { expiresIn: process.env.JWT_EXPIRES_IN || '8h' }
     );
 
-    const { id, password_hash, ...safeUser } = user;
+    const { password_hash, ...safeUser } = user;
     // mysql2 auto-parses JSON columns into objects; guard against both string and array
     safeUser.permissions = typeof safeUser.permissions === 'string'
       ? JSON.parse(safeUser.permissions || '[]')
@@ -28,5 +29,18 @@ export const login = async (req, res, next) => {
   } catch (err) {
     next(err);
     return res.status(500).json({ error: err.message });
+  }
+};
+
+export const me = async (req, res, next) => {
+  try {
+    const user = req['x-user'];
+    if (!user) return res.status(304).json({ error: 'User not found' });
+    return res.json({ user });
+  } catch (err) {
+    next(err);
+    return res.status(500).json({ error: err.message });
+  } finally {
+    return res.end();
   }
 };

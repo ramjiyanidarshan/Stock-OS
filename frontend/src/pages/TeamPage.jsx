@@ -49,9 +49,9 @@ export default function TeamPage() {
           <div className="page-title">Team Members</div>
           <div className="page-subtitle">Manage users and departmental access</div>
         </div>
-        {can('team.write') && (
+        {/* {can('team.write') && ( */}
           <button className="btn btn-primary" onClick={openCreate}><Plus size={15} />Add Member</button>
-        )}
+        {/* )} */}
       </div>
 
       <div className="page-body">
@@ -83,7 +83,7 @@ export default function TeamPage() {
                   <tr key={u.id}>
                     <td>
                       <div style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
-                        <div className="user-avatar" style={{ width: 28, height: 28, fontSize: 11 }}>{u.name?.[0]?.toUpperCase()}</div>
+                        {/* <div className="user-avatar" style={{ width: 28, height: 28, fontSize: 11 }}>{u.name?.[0]?.toUpperCase()}</div> */}
                         <div>
                           <div style={{ fontWeight: 600 }}>{u.name}</div>
                           {u.id === me?.id && <div style={{ fontSize: 10, color: 'var(--accent-blue)' }}>You</div>}
