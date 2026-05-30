@@ -12,6 +12,7 @@ export default function TeamPage() {
   const [modal, setModal] = useState(null);
   const [form, setForm] = useState({});
   const [saving, setSaving] = useState(false);
+  const [deleteConfirm, setDeleteConfirm] = useState(null);
 
   const load = useCallback(async () => {
     const u = await getUsers();
@@ -37,9 +38,21 @@ export default function TeamPage() {
 
   const handleDelete = async (id) => {
     if (id === me?.id) return toast.error('Cannot deactivate yourself');
-    if (!window.confirm('Deactivate this user?')) return;
-    try { await deleteUser(id); toast.success('User deactivated'); load(); }
-    catch (e) { toast.error(e.response?.data?.error || e.message); }
+    setDeleteConfirm(id);
+  };
+
+  const confirmDelete = async () => {
+    if (!deleteConfirm) return;
+    try {
+      await deleteUser(deleteConfirm);
+      toast.success('User deactivated');
+      setDeleteConfirm(null);
+      load();
+    }
+    catch (e) {
+      toast.error(e.response?.data?.error || e.message);
+      setDeleteConfirm(null);
+    }
   };
 
   return (
@@ -50,7 +63,7 @@ export default function TeamPage() {
           <div className="page-subtitle">Manage users and departmental access</div>
         </div>
         {/* {can('team.write') && ( */}
-          <button className="btn btn-primary" onClick={openCreate}><Plus size={15} />Add Member</button>
+        <button className="btn btn-primary" onClick={openCreate}><Plus size={15} />Add Member</button>
         {/* )} */}
       </div>
 
@@ -93,13 +106,13 @@ export default function TeamPage() {
                     <td style={{ color: 'var(--text-secondary)', fontSize: 13 }}>{u.email}</td>
                     <td><span className={`badge ${ROLE_BADGE[u.role_name] || 'badge-gray'}`}>{u.role_name?.replace('_', ' ')}</span></td>
                     <td style={{ color: 'var(--text-muted)', fontSize: 13 }}>{u.department || '—'}</td>
-                    <td><span className="badge badge-green">Active</span></td>
+                    <td><span className={`badge badge-${u.status === 'active' ? 'green' : 'red'}`}>{u.status.charAt(0).toUpperCase() + u.status.slice(1)}</span></td>
                     <td>
                       {/* {can('team.write') && ( */}
-                        <div style={{ display: 'flex', gap: 6 }}>
-                          <button className="btn btn-ghost btn-sm" onClick={() => openEdit(u)}><Edit size={13} /></button>
-                          <button className="btn btn-ghost btn-sm" onClick={() => handleDelete(u.id)} style={{ color: 'var(--accent-red)' }}><Trash2 size={13} /></button>
-                        </div>
+                      <div style={{ display: 'flex', gap: 6 }}>
+                        <button className="btn btn-ghost btn-sm" onClick={() => openEdit(u)}><Edit size={13} /></button>
+                        <button className="btn btn-ghost btn-sm" onClick={() => handleDelete(u.id)} style={{ color: 'var(--accent-red)' }}><Trash2 size={13} /></button>
+                      </div>
                       {/* )} */}
                     </td>
                   </tr>
@@ -125,8 +138,15 @@ export default function TeamPage() {
                 <div className="form-group"><label className="form-label">Email *</label>
                   <input type="email" className="form-control" value={form.email || ''} onChange={e => setForm(p => ({ ...p, email: e.target.value }))} />
                 </div>
-                <div className="form-group"><label className="form-label">{form.id ? 'New Password (leave blank to keep)' : 'Password *'}</label>
-                  <input type="password" className="form-control" value={form.password || ''} onChange={e => setForm(p => ({ ...p, password: e.target.value }))} />
+                <div className="form-group"><label className="form-label">
+                  {form.id ? 'New Password (leave blank to keep)' : 'Password *'}
+                </label>
+                  <div className="tooltip-wrapper">
+                    <input type="password" className="form-control" value={form.password || ''} onChange={e => setForm(p => ({ ...p, password: e.target.value }))} />
+                    <div className="tooltip-content">
+                      This is temp password and user need to reset on first login.
+                    </div>
+                  </div>
                 </div>
                 <div className="form-group"><label className="form-label">Role *</label>
                   <select className="form-control" value={form.role_id || ''} onChange={e => setForm(p => ({ ...p, role_id: e.target.value }))}>
@@ -142,6 +162,26 @@ export default function TeamPage() {
             <div className="modal-footer">
               <button className="btn btn-ghost" onClick={() => setModal(null)}>Cancel</button>
               <button className="btn btn-primary" onClick={handleSave} disabled={saving}>{saving ? 'Saving...' : form.id ? 'Save Changes' : 'Create User'}</button>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {deleteConfirm && (
+        <div className="modal-overlay">
+          <div className="modal" style={{ maxWidth: 400 }}>
+            <div className="modal-header">
+              <div className="modal-title">Deactivate User</div>
+              <button className="modal-close" onClick={() => setDeleteConfirm(null)}><X size={18} /></button>
+            </div>
+            <div className="modal-body">
+              <p style={{ color: 'var(--text-secondary)', marginBottom: 16 }}>
+                Are you sure you want to deactivate this user? This action can be reversed later.
+              </p>
+            </div>
+            <div className="modal-footer">
+              <button className="btn btn-ghost" onClick={() => setDeleteConfirm(null)}>Cancel</button>
+              <button className="btn btn-primary" onClick={confirmDelete} style={{ background: 'var(--accent-red)', borderColor: 'var(--accent-red)' }}>Deactivate</button>
             </div>
           </div>
         </div>

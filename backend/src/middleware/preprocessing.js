@@ -3,7 +3,7 @@ import { v4 } from 'uuid';
 
 export const preProcessingTheRequest = async (req, res, next) => {
     const startTime = new Date(Date.now());
-    console.log(`[${startTime.toLocaleDateString()} ${startTime.toLocaleTimeString()}] ${req.method} ${req.url}`);
+    console.log(`[->] [${startTime.toLocaleDateString()} ${startTime.toLocaleTimeString()}] ${req.method} ${req.url}`);
     req['x-request-id'] = v4();
     res.setHeader('X-Request-ID', req['x-request-id']);
 
@@ -12,7 +12,7 @@ export const preProcessingTheRequest = async (req, res, next) => {
 
     // 2. if request type is not "GET" start a database transaction.
     if (req.method !== 'GET') {
-        console.debug(`Starting transaction for request ${req['x-request-id']} with method ${req.method}`);
+        console.debug(`[DE] Starting transaction for request ${req['x-request-id']} with method ${req.method}`);
         req['x-db-transaction'] = await startTransaction(req['x-db-connection']);
     }
 
@@ -33,11 +33,11 @@ export const notFoundHandler = (req, res, next) => {
 const releaseResources = async (req, res) => {
     if (req.method !== 'GET') {
         if (res.statusCode >= 200 && res.statusCode < 300) {
-            console.debug(`Committing transaction for request ${req['x-request-id']} with status code ${res.statusCode}`);
+            console.debug(`[DE] Committing transaction for request ${req['x-request-id']} with status code ${res.statusCode}`);
             await commitTransaction(req['x-db-transaction']);
         }
         else {
-            console.debug(`Rolling back transaction for request ${req['x-request-id']} with status code ${res.statusCode}`);
+            console.debug(`[DE] Rolling back transaction for request ${req['x-request-id']} with status code ${res.statusCode}`);
             await rollbackTransaction(req['x-db-transaction']);
         }
     }

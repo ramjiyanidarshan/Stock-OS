@@ -13,14 +13,14 @@ api.interceptors.request.use(config => {
 // Normalize response format
 const normalizeResponse = (response) => {
   const { data } = response;
-  
+
   if (data?.data !== undefined) {
     return {
       ...response,
       data: data.data
     };
   }
-  
+
   return response;
 };
 
@@ -44,5 +44,8 @@ export const getUsers = () => api.get('/users');
 export const createUser = (data) => api.post('/users', data);
 export const updateUser = (id, data) => api.put(`/users/${id}`, data);
 export const deleteUser = (id) => api.delete(`/users/${id}`);
+
+// logs
+export const getLogs = () => api.get('/logs');
 
 export default api;

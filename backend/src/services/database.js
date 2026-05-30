@@ -21,6 +21,42 @@ export const getConnectionFromPool = async () => {
     return await DATABASE_CONNECTION_POOL.getConnection();
 };
 
+/**
+ * Builds query parts based on the provided flags and their definitions
+ * @param {*} flags Array 
+ * @param {*} flagDefinitions Object defining the available flags, their select fields and joins
+ * @param {*} defaultFields Array of fields to include by default
+ * @returns Object containing the combined fields and joins for the query
+ */
+export const buildFlagQueryParts = (flags = [], flagDefinitions = {}, defaultFields = []) => {
+    const normalizedFlags = Array.isArray(flags) ? flags : [flags];
+    const selectedFields = new Set(defaultFields);
+    const joinMap = new Map();
+
+    normalizedFlags.forEach((flag) => {
+        const definition = flagDefinitions[flag];
+        if (!definition) return;
+
+        if (Array.isArray(definition.select)) {
+            definition.select.forEach((column) => selectedFields.add(column));
+        }
+
+        if (Array.isArray(definition.joins)) {
+            definition.joins.forEach((join) => {
+                const joinKey = join.alias || join.table;
+                if (!joinMap.has(joinKey)) {
+                    joinMap.set(joinKey, join);
+                }
+            });
+        }
+    });
+
+    return {
+        fields: [...selectedFields].join(', '),
+        joins: [...joinMap.values()],
+    };
+};
+
 export const startTransaction = async (conn) => {
     await conn.beginTransaction();
     return conn;

@@ -24,7 +24,7 @@ const NAV = [
     label: 'Logs',
     icon: FileInput,
     submenu: [
-      { to: '/log-and-trace/transactions', label: 'Transaction', icon: Train }
+      { to: '/logs', label: 'Transaction Logs', icon: Train }
     ],
   },
 ];

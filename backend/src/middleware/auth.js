@@ -19,7 +19,7 @@ export const authenticate = async (req, res, next) => {
     //   ? JSON.parse(user.permissions || '[]')
     //   : (user.permissions || []);
     // req.user = user;
-    req['x-user'] = {name: decoded.name, email: decoded.email, role_name: decoded.role, permissions: decoded.permissions || []};
+    req['x-user'] = decoded;
     console.debug('Authentication Completed: with user:', req['x-user']);
     next();
   } catch (err) {

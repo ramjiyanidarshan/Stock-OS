@@ -258,6 +258,7 @@ code,
   gap: 10px;
 }
 
+
 .user-avatar {
   width: 32px;
   height: 32px;
@@ -862,6 +863,63 @@ tbody tr:last-child td {
 .badge-gray {
   background: var(--bg-elevated);
   color: var(--text-secondary);
+}
+
+/* Tooltip */
+.tooltip-wrapper {
+  position: relative;
+  display: inline-block;
+  width: 100%;
+}
+
+.tooltip-icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  margin-left: 6px;
+  cursor: help;
+  color: var(--text-muted);
+  transition: color 0.2s;
+}
+
+.tooltip-icon:hover {
+  color: var(--accent-blue);
+}
+
+.tooltip-content {
+  visibility: hidden;
+  background-color: var(--bg-elevated);
+  border: 1px solid var(--border-accent);
+  color: var(--text-primary);
+  text-align: left;
+  border-radius: var(--radius);
+  padding: 8px 12px;
+  position: absolute;
+  z-index: 1;
+  bottom: 125%;
+  left: 50%;
+  margin-left: -80px;
+  width: 160px;
+  font-size: 12px;
+  line-height: 1.4;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.5);
+  white-space: normal;
+  word-wrap: break-word;
+}
+
+.tooltip-content::after {
+  content: "";
+  position: absolute;
+  top: 100%;
+  left: 50%;
+  margin-left: -5px;
+  border-width: 5px;
+  border-style: solid;
+  border-color: var(--border-accent) transparent transparent transparent;
+}
+
+.tooltip-wrapper:hover .tooltip-content {
+  visibility: visible;
 }
 
 /* Modal */

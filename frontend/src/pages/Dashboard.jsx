@@ -11,7 +11,7 @@ export default function Dashboard() {
     <div className="page-shell">
       <div className="hero-panel">
         <div className="hero-copy">
-          <span className="hero-eyebrow">Inventory ERP</span>
+          <span className="hero-eyebrow">StockOS - By DSP</span>
           <h1>Welcome back, {user?.name || 'System Admin'}.</h1>
           <p>
             StockOS is ready to help you manage stock, teams, and permissions from a single place.

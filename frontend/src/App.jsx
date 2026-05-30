@@ -10,6 +10,7 @@ import NotFound from './pages/NotFound';
 import ModulesPage from './pages/ModulesPage';
 import PermissionsPage from './pages/PermissionsPage';
 import UsersPage from './pages/UsersPage';
+import TransactionLogsPage from './pages/TransactionLogsPage';
 
 const ProtectedRoute = ({ children, permission }) => {
   const { user, loading, can } = useAuth();
@@ -34,6 +35,7 @@ function App() {
             <Route path="access-control/modules" element={<ModulesPage />} />
             <Route path="access-control/permissions" element={<PermissionsPage />} />
             <Route path="access-control/users" element={<TeamPage />} />
+            <Route path="logs" element={<TransactionLogsPage />} />
           </Route>
           <Route path="*" element={<NotFound />} />
         </Routes>
