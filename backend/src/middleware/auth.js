@@ -8,19 +8,7 @@ export const authenticate = async (req, res, next) => {
   try {
     const token = auth.split(' ')[1];
     const decoded = jwt.verify(token, process.env.JWT_SECRET);
-    // const user = await knex('users')
-    //   .join('roles', 'users.role_id', 'roles.id')
-    //   .where('users.id', decoded.id)
-    //   .where('users.is_active', true)
-    //   .select('users.*', 'roles.name as role_name', 'roles.permissions')
-    //   .first();
-    // if (!user) return res.status(401).json({ error: 'User not found or inactive' });
-    // user.permissions = typeof user.permissions === 'string'
-    //   ? JSON.parse(user.permissions || '[]')
-    //   : (user.permissions || []);
-    // req.user = user;
     req['x-user'] = decoded;
-    console.debug('Authentication Completed: with user:', req['x-user']);
     next();
   } catch (err) {
     return res.status(401).json({ error: 'Invalid or expired token' });
